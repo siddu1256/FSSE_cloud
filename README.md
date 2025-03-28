@@ -1,7 +1,7 @@
 # FSSE - Fuzzy Semantic Searchable Encryption
 
 ## Overview
-This repository implements a **Fuzzy Semantic Searchable Encryption (FSSE)** scheme using a combination of encryption techniques and secure OTP (One-Time Password) mechanisms to ensure data privacy and security. The system is designed to allow encrypted document storage and retrieval with advanced keyword-based search functionalities. The project incorporates forward secrecy and the use of time-based token updating to secure access to encrypted data. 
+This repository implements a Fuzzy Semantic Searchable Encryption (FSSE) scheme, as presented in the research paper ["Fuzzy Semantic Searchable Encryption for Privacy-Preserving Document Retrieval"](https://ieeexplore.ieee.org/document/8957445) published in IEEE by **GUOXIU LIU**. The system uses a combination of encryption techniques and secure OTP (One-Time Password) mechanisms to ensure data privacy and security. The project is designed to allow encrypted document storage and retrieval with advanced keyword-based search functionalities. It also incorporates forward secrecy and time-based token updating to secure access to encrypted data.
 
 Key features of the project:
 - **AES Encryption** for document confidentiality.
@@ -27,6 +27,50 @@ The system integrates with a MySQL database to store user information, metadata,
 - **document_metadata**: Stores metadata of encrypted documents.
 - **user_documents**: Tracks the documents uploaded by each user.
 - **word_fingerprints**: Stores the fingerprints of individual words within documents.
+
+ ### Workflow
+
+**1. User Authentication & Registration**
+
+When a user uploads a file, we check if they exist in the user_auth table.
+
+If not, we generate a new PyOTP secret and store it in the database.
+
+This ensures that each user is uniquely identified and authenticated before uploading.
+
+**2. Keyword Fingerprint Generation**
+
+The system generates a SHA-256 fingerprint of the provided keyword for secure indexing.
+
+**3. Document Encryption**
+
+The document is encrypted using AES-GCM with a randomly generated 128-bit key.
+
+The encrypted data, nonce, and authentication tag are stored securely.
+
+**4. Metadata Storage in MySQL (Private Cloud)**
+
+Stores the filename, AES encryption key (base64-encoded), keyword fingerprint, and plaintext (optional) in document_metadata.
+
+The user_documents table tracks which users uploaded which documents.
+
+**5. Encrypted Document Storage in Public Cloud**
+
+The encrypted document is saved as a .json file in a public_cloud/ directory.
+
+**6. Word Extraction & Secure Indexing**
+
+Extracts words from the document and hashes each word using SHA-256.
+
+These hashed words are stored in the word_fingerprints table for searchability.
+
+**7. Full-Text Search Support**
+
+MySQL’s full-text indexing allows searching within document_metadata.
+
+**8. Access Control & Decryption**
+
+When retrieving a document, the system verifies the user's identity and decrypts the document if authorized.
 
 ### How to Use
 1. **Set Up the Database**:
