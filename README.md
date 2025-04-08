@@ -92,7 +92,7 @@ When retrieving a document, the system verifies the user's identity and decrypts
     -- Document Metadata Table (No Changes, added user_id if it's meant to be used in this table)
     CREATE TABLE IF NOT EXISTS document_metadata (
         file_name VARCHAR(255) PRIMARY KEY,
-        keyword_fp VARCHAR(255) NOT NULL,
+        keyword_fp VARCHAR(1024) NOT NULL,
         aes_key VARCHAR(255) NOT NULL,
         file_content TEXT,
         user_id VARCHAR(255),  -- New column for user_id if it's necessary here
@@ -113,7 +113,7 @@ When retrieving a document, the system verifies the user's identity and decrypts
     CREATE TABLE IF NOT EXISTS word_fingerprints (
         file_name VARCHAR(255),
         word VARCHAR(255),
-        fingerprint VARCHAR(255),
+        fingerprint VARCHAR(1024),
         PRIMARY KEY (file_name, word),
         FOREIGN KEY (file_name) REFERENCES document_metadata(file_name)
     );
