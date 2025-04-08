@@ -149,3 +149,8 @@ When retrieving a document, the system verifies the user's identity and decrypts
   - `pycryptodome`
   - `re`
 - MySQL Server
+
+### How to run:
+- run user.py, private_server.py, public_server.py simulatneously
+- make sure you have sql server running with the tables
+- (some times the private_server.py terminal goes blank so to avoid that switch to private_server terminal as soon as you give query in user)
